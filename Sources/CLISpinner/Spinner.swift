@@ -18,8 +18,8 @@ public final class Spinner {
             return _text
         }
         set {
-            let (_, _, _, newText) = Rainbow.extractModes(for: newValue)
-            let (_, _, _, oldText) = Rainbow.extractModes(for: _text)
+            let newText = Rainbow.extractEntry(for: newValue).plainText
+            let oldText = Rainbow.extractEntry(for: _text).plainText
             let diff = oldText.count - newText.count
             if diff > 0 {
                 _text = newValue
