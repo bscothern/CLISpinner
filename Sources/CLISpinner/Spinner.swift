@@ -10,6 +10,8 @@ public final class Spinner {
             frameIdx = newValue.startIndex
         }
     }
+    private let originalFrames: [String]
+    
     /// The time to wait in seconds between each frame of the animation.
     public var speed: Double
     /// Text that is displayed right next to the spinner.
@@ -43,7 +45,9 @@ public final class Spinner {
     ///   - speed: Custom speed value, defaults to a recommended value for each predefined pattern.
     ///   - color: Custom spinner color, defaults to .default.
     public init(pattern: SpinnerPattern, text: String = "", speed: Double? = nil, color: Color = .default) {
-        frames = pattern.frames.map { $0.applyingColor(color) }
+        let originalFrames = pattern.frames.map { $0.applyingColor(color) }
+        frames = originalFrames
+        self.originalFrames = originalFrames
         _text = text
         self.speed = speed ?? pattern.speed
         frameIdx = frames.startIndex
@@ -61,8 +65,14 @@ public final class Spinner {
     }
 
     /// Start the spinner.
-    public func start() {
+    public func start(resetFrames: Bool = false) {
         guard !isRunning else { return }
+        
+        if resetFrames {
+            frames = originalFrames
+            frameIdx = frames.startIndex
+        }
+        
         hideCursor(true)
         isRunning = true
 
