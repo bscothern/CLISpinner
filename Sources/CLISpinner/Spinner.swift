@@ -31,6 +31,8 @@ public final class Spinner {
             }
         }
     }
+    
+    public var unhideCursorOnDeinit: Bool = true
 
     private var _text = ""
     public private(set) var isRunning = false
@@ -184,7 +186,8 @@ public final class Spinner {
     }
 
     deinit {
-        unhideCursor()
+        if unhideCursorOnDeinit {
+            unhideCursor()
+        }
     }
 }
-
